@@ -10,7 +10,11 @@
     "dev": "nodemon | pino-pretty --colorize",
     "start": "node --env-file=.env dist/server.js",
     "db:apply:changes": "npx drizzle-kit push",
-    "db:seed": "node --experimental-strip-types scripts/seed.ts"
+    "db:seed": "node --experimental-strip-types scripts/seed.ts",
+    "format:check": "prettier --check .",
+    "format": "prettier --write .",
+    "lint": "eslint . --ext .ts",
+    "test": "echo \"Error: no test specified\""
   },
   "keywords": [],
   "author": "",
