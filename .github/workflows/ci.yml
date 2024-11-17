@@ -17,4 +17,3 @@ jobs:
     uses: dancastillo/workflows/.github/workflows/ts-ci.yml@main
     with:
       license-check: true
-      lint: true
