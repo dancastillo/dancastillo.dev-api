@@ -8,13 +8,22 @@ export default async function serviceApp(fastify: FastifyInstance, opts: Fastify
 
   await fastify.register(fastifyAutoload, {
     dir: path.join(import.meta.dirname, 'routes'),
+    forceESM: true,
     autoHooks: true,
     cascadeHooks: true,
+    ignorePattern: /types/,
     options: { ...opts },
   })
 
   await fastify.register(fastifyAutoload, {
     dir: path.join(import.meta.dirname, 'plugins/external'),
+    forceESM: true,
+    options: { ...opts },
+  })
+
+  await fastify.register(fastifyAutoload, {
+    dir: path.join(import.meta.dirname, 'plugins/custom'),
+    forceESM: true,
     options: { ...opts },
   })
 

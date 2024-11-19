@@ -23,7 +23,7 @@ function getLoggerOptions() {
   return { level: process.env.LOG_LEVEL ?? 'silent' }
 }
 
-const app = Fastify({
+export const app = Fastify({
   logger: getLoggerOptions(),
   ajv: {
     customOptions: {
@@ -46,7 +46,7 @@ closeWithGrace({ delay: 500 }, async ({ err }): Promise<void> => {
 await app.ready()
 
 try {
-  await app.listen({ port: 3000 })
+  await app.listen({ port: Number(process.env.PORT) ?? 3040 })
 } catch (err) {
   process.exit(1)
 }

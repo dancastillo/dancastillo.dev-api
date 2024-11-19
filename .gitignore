@@ -143,3 +143,5 @@ uploads/tasks/*
 
 # common tasks
 common.txt
+
+**/.DS_Store
