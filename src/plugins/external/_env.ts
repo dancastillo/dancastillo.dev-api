@@ -1,5 +1,5 @@
-// Name _env to run this first in autoload
 import env from '@fastify/env'
+import { join } from 'path'
 
 declare module 'fastify' {
   export interface FastifyInstance {
@@ -7,13 +7,16 @@ declare module 'fastify' {
       PORT: number
       RATE_LIMIT_MAX: number
       DATABASE_URL: string
+      GITHUB_API_URL: string
+      GITHUB_API_TOKEN: string
+      GITHUB_USERNAME: string
     }
   }
 }
 
 const schema = {
   type: 'object',
-  required: ['DATABASE_URL'],
+  required: ['DATABASE_URL', 'GITHUB_API_URL', 'GITHUB_API_TOKEN', 'GITHUB_USERNAME'],
   properties: {
     RATE_LIMIT_MAX: {
       type: 'number',
@@ -23,8 +26,30 @@ const schema = {
     DATABASE_URL: {
       type: 'string',
     },
+    GITHUB_API_TOKEN: {
+      type: 'string',
+    },
+    GITHUB_API_URL: {
+      type: 'string',
+    },
+    GITHUB_USERNAME: {
+      type: 'string',
+    },
   },
 }
+
+type AutoConfigDate = {
+  PORT: number
+  RATE_LIMIT_MAX: number
+  DATABASE_URL: string
+  GITHUB_API_URL: string
+  GITHUB_API_TOKEN: string
+  GITHUB_USERNAME: string
+  [key: string]: unknown
+}
+
+const testRun = process.env.NODE_ENV === 'test'
+const envPath = testRun ? join(process.cwd(), '.env.test') : join(process.cwd(), '.env')
 
 export const autoConfig = {
   // Decorate Fastify instance with `config` key
@@ -32,9 +57,10 @@ export const autoConfig = {
   confKey: 'config',
   // Schema to validate
   schema,
-  // Needed to read .env in root folder
-  dotenv: true,
-  data: process.env,
+  dotenv: {
+    path: envPath,
+  },
+  data: process.env as AutoConfigDate,
 }
 
 /**
