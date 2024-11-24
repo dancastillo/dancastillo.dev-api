@@ -2,18 +2,10 @@ import path from 'node:path'
 import fastifyAutoload from '@fastify/autoload'
 import fastifyPrintRoutes from 'fastify-print-routes'
 import { FastifyError, FastifyInstance, FastifyPluginOptions, FastifyReply, FastifyRequest } from 'fastify'
+import { addCacheDecorator } from './decorators/cache.js'
 
 export default async function serviceApp(fastify: FastifyInstance, opts: FastifyPluginOptions) {
   await fastify.register(fastifyPrintRoutes)
-
-  await fastify.register(fastifyAutoload, {
-    dir: path.join(import.meta.dirname, 'routes'),
-    forceESM: true,
-    autoHooks: true,
-    cascadeHooks: true,
-    ignorePattern: /types/,
-    options: { ...opts },
-  })
 
   await fastify.register(fastifyAutoload, {
     dir: path.join(import.meta.dirname, 'plugins/external'),
@@ -26,6 +18,19 @@ export default async function serviceApp(fastify: FastifyInstance, opts: Fastify
     forceESM: true,
     options: { ...opts },
   })
+
+  // Load all routes as last autoload
+  await fastify.register(fastifyAutoload, {
+    dir: path.join(import.meta.dirname, 'routes'),
+    forceESM: true,
+    autoHooks: true,
+    cascadeHooks: true,
+    ignorePattern: /types/,
+    options: { ...opts },
+  })
+
+  // Add decorators
+  addCacheDecorator(fastify)
 
   fastify.setErrorHandler((err: FastifyError, request: FastifyRequest, reply: FastifyReply) => {
     request.log.error(
