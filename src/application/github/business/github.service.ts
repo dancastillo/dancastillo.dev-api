@@ -1,25 +1,40 @@
 import { FastifyBaseLogger } from 'fastify'
-import { createFailureResult, createSuccessfulResult, Result } from '../../../common/result.js'
 import { requestGithubContributions } from '../data/github.data.service.js'
 import { GithubContribution } from '../data/github.data.types.js'
+import { CacheInstance } from '@dancastillo/cache'
+import { CACHE_KEY } from '../../../common/cache.js'
+import { createFailureResult, Result, createSuccessfulResult } from '@dancastillo/nothrow'
+import { createError, type DCError } from '@dancastillo/error'
 
 const LOG_PREFIX = 'GithubService'
 
-export async function getGithubContributions(logger: FastifyBaseLogger): Promise<Result<GithubContribution[]>> {
+export async function getGithubContributions(
+  cache: CacheInstance,
+  logger: FastifyBaseLogger
+): Promise<Result<GithubContribution[], DCError>> {
   try {
-    const contributions: Result<GithubContribution[]> = await requestGithubContributions()
+    const cachedContributions = cache.get<GithubContribution[]>(CACHE_KEY.GITHUB_CONTRIBUTIONS)
 
-    if (!contributions.success) {
-      return contributions
+    if (cachedContributions) {
+      return createSuccessfulResult(cachedContributions)
     }
 
-    const sortedDescContributions = contributions.data.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+    const contributions: GithubContribution[] = await requestGithubContributions()
+
+    if (!contributions || contributions.length === 0) {
+      return createSuccessfulResult([])
+    }
+
+    const sortedDescContributions = contributions.sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
+
+    // Set cache for github contributions
+    cache.set(CACHE_KEY.GITHUB_CONTRIBUTIONS, sortedDescContributions)
 
     return createSuccessfulResult(sortedDescContributions)
   } catch (error: unknown) {
     logger.error({ error }, `${LOG_PREFIX} :: An error occurred while getting Github contributions`)
-    return createFailureResult<GithubContribution[]>([
-      { code: 500, title: 'Internal Server Error', detail: 'Error while getting Github contributions', meta: error },
+    return createFailureResult([
+      createError(500, 'Unknown error', 'An error occurred while getting Github contributions'),
     ])
   }
 }

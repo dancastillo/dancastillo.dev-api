@@ -3,10 +3,9 @@ import { getGithubContributionsGraphqlValues } from './github.data.query.js'
 import { autoConfig } from '../../../plugins/external/_env.js'
 import { mapGithubContributionData } from './github.data.mapper.js'
 import { ACCEPT_HEADER, HTTP_METHOD, USER_AGENT_HEADER } from '../../../common/http.js'
-import { createSuccessfulResult, Result } from '../../../common/result.js'
 import { GithubContribution, GithubContributionData } from './github.data.types.js'
 
-export async function requestGithubContributions(): Promise<Result<GithubContribution[]>> {
+export async function requestGithubContributions(): Promise<GithubContribution[]> {
   try {
     const { query, variables } = getGithubContributionsGraphqlValues()
 
@@ -29,7 +28,7 @@ export async function requestGithubContributions(): Promise<Result<GithubContrib
 
     const githubContributions = mapGithubContributionData(json)
 
-    return createSuccessfulResult(githubContributions)
+    return githubContributions
   } catch (error: unknown) {
     throw error
   }
