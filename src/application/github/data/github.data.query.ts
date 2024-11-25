@@ -1,5 +1,3 @@
-import { autoConfig } from '../../../plugins/external/_env.js'
-
 const CONTRIBUTIONS_FIRST = 10
 const CONTRIBUTIONS_TO = new Date()
 const CONTRIBUTIONS_FROM = new Date(new Date(CONTRIBUTIONS_TO).setFullYear(CONTRIBUTIONS_TO.getFullYear() - 1))
@@ -14,7 +12,10 @@ export type GithubGraphContributions = {
   login: string
 }
 
-export function getGithubContributionsGraphqlValues(): { query: string; variables: GithubGraphContributions } {
+export function getGithubContributionsGraphqlValues(login: string): {
+  query: string
+  variables: GithubGraphContributions
+} {
   const contributions = {
     query: `
 query GetContributions ($login: String!, $first: Int!, $from: DateTime!, $to: DateTime!, $orderBy: ContributionOrder!) {
@@ -79,7 +80,7 @@ query GetContributions ($login: String!, $first: Int!, $from: DateTime!, $to: Da
       first: CONTRIBUTIONS_FIRST,
       to: CONTRIBUTIONS_TO,
       from: CONTRIBUTIONS_FROM,
-      login: autoConfig.data.GITHUB_USERNAME,
+      login: login,
       orderBy: ORDER_BY,
     },
   }
