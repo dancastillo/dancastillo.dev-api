@@ -5,13 +5,21 @@ import { CacheInstance } from '@dancastillo/cache'
 import { CACHE_KEY } from '../../../common/cache.js'
 import { createFailureResult, Result, createSuccessfulResult } from '@dancastillo/nothrow'
 import { createError, type DCError } from '@dancastillo/error'
+import { Envs } from '../../../plugins/external/_env.js'
+
+type ServiceDependencies = {
+  cache: CacheInstance
+  logger: FastifyBaseLogger
+  envs: Envs
+}
 
 const LOG_PREFIX = 'GithubService'
 
-export async function getGithubContributions(
-  cache: CacheInstance,
-  logger: FastifyBaseLogger
-): Promise<Result<GithubContribution[], DCError>> {
+export async function getGithubContributions({
+  cache,
+  logger,
+  envs,
+}: ServiceDependencies): Promise<Result<GithubContribution[], DCError>> {
   try {
     const cachedContributions = cache.get<GithubContribution[]>(CACHE_KEY.GITHUB_CONTRIBUTIONS)
 
@@ -19,7 +27,7 @@ export async function getGithubContributions(
       return createSuccessfulResult(cachedContributions)
     }
 
-    const contributions: GithubContribution[] = await requestGithubContributions()
+    const contributions: GithubContribution[] = await requestGithubContributions(envs)
 
     if (!contributions || contributions.length === 0) {
       return createSuccessfulResult([])

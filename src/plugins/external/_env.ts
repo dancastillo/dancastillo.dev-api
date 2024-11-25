@@ -10,17 +10,18 @@ declare module 'fastify' {
       GITHUB_API_URL: string
       GITHUB_API_TOKEN: string
       GITHUB_USERNAME: string
+      CACHE_DURATION: number
     }
   }
 }
 
 const schema = {
   type: 'object',
-  required: ['DATABASE_URL', 'GITHUB_API_URL', 'GITHUB_API_TOKEN', 'GITHUB_USERNAME'],
+  required: ['DATABASE_URL', 'GITHUB_API_URL', 'GITHUB_API_TOKEN', 'GITHUB_USERNAME', 'CACHE_DURATION'],
   properties: {
     RATE_LIMIT_MAX: {
       type: 'number',
-      // Put it to 4 in your .env file for tests
+      // Put it to 4 in your .env.test file for tests
       default: 100,
     },
     DATABASE_URL: {
@@ -35,10 +36,14 @@ const schema = {
     GITHUB_USERNAME: {
       type: 'string',
     },
+    CACHE_DURATION: {
+      type: 'number',
+      default: 60,
+    },
   },
 }
 
-type AutoConfigDate = {
+export type Envs = {
   PORT: number
   RATE_LIMIT_MAX: number
   DATABASE_URL: string
@@ -60,7 +65,8 @@ export const autoConfig = {
   dotenv: {
     path: envPath,
   },
-  data: process.env as AutoConfigDate,
+  data: process.env,
+  // data: process.env as unknown as AutoConfigDate,
 }
 
 /**

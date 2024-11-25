@@ -25,7 +25,7 @@ export default async function serviceApp(fastify: FastifyInstance, opts: Fastify
     forceESM: true,
     autoHooks: true,
     cascadeHooks: true,
-    ignorePattern: /types/,
+    ignorePattern: /model/,
     options: { ...opts },
   })
 
