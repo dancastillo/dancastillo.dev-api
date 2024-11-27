@@ -10,7 +10,6 @@ COPY . .
 # Build dependencies
 RUN npm install && npm run build
 
-
 ####################################################
 # Build the production image
 ####################################################
@@ -29,8 +28,6 @@ COPY --from=build /build/package-lock.json ./package-lock.json
 
 # Install production dependencies and clean the cache
 RUN npm ci --omit=dev && npm cache clean --force
-
-# Install typescript globally
 
 # Copy the dist source code into the container
 COPY --from=build /build/dist ./dist

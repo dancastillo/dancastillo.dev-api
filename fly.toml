@@ -8,6 +8,22 @@ primary_region = 'mia'
 
 [build]
 
+[env]
+  PORT = 3000
+  HOST = "127.0.0.1"
+
+[[services]]
+  internal_port = 5432 # Postgres instance
+  protocol = "tcp"
+
+[[services.ports]]
+  handlers = ["pg_tls"]
+  port = 5432
+
+# TODO-DAN: figure out how to run migrations
+# [deploy]
+#   release_command = "npm run db:apply:changes"
+
 [http_service]
   internal_port = 3000
   force_https = true

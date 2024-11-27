@@ -11,8 +11,7 @@ const pool = new pg.Pool({
 const db = drizzle(pool)
 
 const insertPost: typeof postsTable.$inferInsert = {
-  title: 'Test Post',
-  context: 'This is a test post',
+  content: 'This is a test post',
 }
 
 const newPosts = await db.insert(postsTable).values(insertPost).returning()
@@ -30,7 +29,7 @@ if (posts.length === 0 || !post.id) {
 await db
   .update(postsTable)
   .set({
-    title: 'Updated Test Post',
+    content: 'This is an updated test post',
   })
   .where(eq(postsTable.id, post.id))
 console.log('Post info updated!')
