@@ -1,6 +1,6 @@
 import { randomUUID } from 'node:crypto'
 import { sql, SQL } from 'drizzle-orm'
-import { pgTable, varchar, text, uuid, index, timestamp } from 'drizzle-orm/pg-core'
+import { pgTable, varchar, uuid, index, timestamp } from 'drizzle-orm/pg-core'
 
 export const postsTable = pgTable(
   'posts',
