@@ -6,7 +6,8 @@ export const postsTable = pgTable(
   'posts',
   {
     id: uuid('id').defaultRandom().primaryKey(),
-    content: text().notNull(),
+    title: varchar().notNull(),
+    content: varchar().notNull(),
     created_at: timestamp({ mode: 'date' }).notNull().defaultNow(),
     updated_at: timestamp({ mode: 'date' })
       .notNull()
