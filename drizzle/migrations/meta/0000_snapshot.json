@@ -1,5 +1,5 @@
 {
-  "id": "64e462ea-6398-44b0-81c3-679f0ced1285",
+  "id": "f7d675a9-c119-4c5d-9a02-3cbee4f2ec28",
   "prevId": "00000000-0000-0000-0000-000000000000",
   "version": "7",
   "dialect": "postgresql",
@@ -15,9 +15,15 @@
           "notNull": true,
           "default": "gen_random_uuid()"
         },
+        "title": {
+          "name": "title",
+          "type": "varchar",
+          "primaryKey": false,
+          "notNull": true
+        },
         "content": {
           "name": "content",
-          "type": "text",
+          "type": "varchar",
           "primaryKey": false,
           "notNull": true
         },
@@ -47,7 +53,7 @@
           "type": "varchar",
           "primaryKey": false,
           "notNull": true,
-          "default": "'pos_e8f25074-06c4-4ae3-8b54-33e5cb51c19e'"
+          "default": "'pos_0b795df1-ae4b-4d8f-bfa2-c25df9234757'"
         }
       },
       "indexes": {
