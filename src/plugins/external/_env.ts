@@ -62,18 +62,27 @@ export type Envs = {
   [key: string]: unknown
 }
 
-const testRun = process.env.NODE_ENV === 'test'
-const envPath = testRun ? join(process.cwd(), '.env.test') : join(process.cwd(), '.env')
+function getDotEnvConfig() {
+  const testRun = process.env.NODE_ENV === 'test'
+  if (testRun) {
+    return {
+      path: join(process.cwd(), '.env.test'),
+      debug: true,
+    }
+  }
+
+  return {
+    path: join(process.cwd(), '.env'),
+  }
+}
 
 export const autoConfig = {
   // Decorate Fastify instance with `config` key
   // Optional, default: 'config'
   confKey: 'config',
   // Schema to validate
-  schema,
-  dotenv: {
-    path: envPath,
-  },
+  schema: schema,
+  dotenv: getDotEnvConfig(),
   data: process.env,
   // data: process.env as unknown as AutoConfigDate,
 }

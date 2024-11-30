@@ -1,6 +1,5 @@
 import fp from 'fastify-plugin'
 import { FastifyInstance } from 'fastify'
-import 'dotenv/config'
 import { drizzle, NodePgDatabase } from 'drizzle-orm/node-postgres'
 import pg from 'pg'
 import { DatabaseService, getDbService } from '../../app/db/db.service.js'
