@@ -21,7 +21,7 @@ primary_region = 'mia'
   port = 5432
 
 [deploy]
-  release_command = "npm run db:migration && npm run db:seed"
+  release_command = "./scripts/runDbScripts.sh"
 
 [http_service]
   internal_port = 3000

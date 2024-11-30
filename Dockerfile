@@ -23,6 +23,12 @@ WORKDIR /usr/src/app
 # Copy the package.json file to the /build directory
 COPY package.json ./
 
+# Copy the database script directory from the /build directory
+COPY --from=build /build/scripts/ ./scripts/
+
+# Copy the drizzle sql files and config directory from the /build directory
+COPY --from=build /build/drizzle ./drizzle
+
 # Copy the package-lock.json file to the /build directory
 COPY --from=build /build/package-lock.json ./package-lock.json
 
