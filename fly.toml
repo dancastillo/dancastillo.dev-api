@@ -20,9 +20,8 @@ primary_region = 'mia'
   handlers = ["pg_tls"]
   port = 5432
 
-# TODO-DAN: figure out how to run migrations
-# [deploy]
-#   release_command = "npm run db:apply:changes"
+[deploy]
+  release_command = "npm run db:migration && npm run db:seed"
 
 [http_service]
   internal_port = 3000

@@ -22,8 +22,7 @@ function getLoggerOptions() {
 
   return { level: process.env.LOG_LEVEL ?? 'silent' }
 }
-
-export const app = Fastify({
+const app = Fastify({
   logger: getLoggerOptions(),
   ajv: {
     customOptions: {
@@ -48,5 +47,8 @@ await app.ready()
 try {
   await app.listen({ host: process.env.HOST, port: Number(process.env.PORT) })
 } catch (err) {
+  app.log.error(err)
   process.exit(1)
 }
+
+export { app }

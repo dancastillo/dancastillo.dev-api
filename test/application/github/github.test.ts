@@ -16,7 +16,7 @@ test('Github contributions are sorted by createdAt in descending order', async (
   mockPool
     .intercept({
       path: '/graphql',
-      method: 'GET',
+      method: 'POST',
     })
     .reply(200, { data: mockData })
 
