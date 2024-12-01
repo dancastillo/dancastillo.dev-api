@@ -1,17 +1,21 @@
 import { NodePgDatabase } from 'drizzle-orm/node-postgres'
-import { getAllPosts } from './posts/post.data.service.js'
-import { Post } from '../services/post/post.types.js'
+import { getAllPosts, getPostContentById } from './posts/post.data.service.js'
+import { PostContent, PostMeta } from '../services/post/post.types.js'
+import * as schema from '../db/schema.js'
+import { Nullable } from '../../common/types.js'
 
 export type DatabaseService = {
   posts: {
-    getAll: () => Promise<Post[]>
+    getAllMeta: () => Promise<PostMeta[]>
+    getContentById: (id: string) => Promise<Nullable<PostContent>>
   }
 }
 
-export function getDbService(db: NodePgDatabase): DatabaseService {
+export function getDbService(db: NodePgDatabase<typeof schema>): DatabaseService {
   return {
     posts: {
-      getAll: async () => await getAllPosts(db),
+      getAllMeta: async () => await getAllPosts(db),
+      getContentById: async (externalId: string) => await getPostContentById(db, externalId),
     },
   }
 }
