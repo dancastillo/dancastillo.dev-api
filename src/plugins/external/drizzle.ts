@@ -3,6 +3,7 @@ import { FastifyInstance } from 'fastify'
 import { drizzle, NodePgDatabase } from 'drizzle-orm/node-postgres'
 import pg from 'pg'
 import { DatabaseService, getDbService } from '../../app/db/db.service.js'
+import * as schema from '../../app/db/schema.js'
 
 declare module 'fastify' {
   export interface FastifyInstance {
@@ -26,7 +27,7 @@ export default fp(
     const pool = new pg.Pool({
       connectionString: databaseUrl,
     })
-    const db: NodePgDatabase = drizzle(pool)
+    const db: NodePgDatabase<typeof schema> = drizzle(pool, { schema: schema })
 
     fastify.decorate('databaseService', getDbService(db))
 
