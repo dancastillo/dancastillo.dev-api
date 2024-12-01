@@ -22,7 +22,6 @@ export default async function serviceApp(fastify: FastifyInstance, opts: Fastify
   // Load all routes as last autoload
   await fastify.register(fastifyAutoload, {
     dir: path.join(import.meta.dirname, 'routes'),
-    // forceESM: true,
     autoHooks: true,
     cascadeHooks: true,
     ignorePattern: /model/,

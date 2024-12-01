@@ -3,25 +3,20 @@ import { PostContent, PostMeta } from '../../services/post/post.types.js'
 import { PostContentModel, PostMetaModel } from './posts.types.js'
 import { postsTable } from '../schema.js'
 import { mapPostContent, mapPostsMeta } from '../../services/post/post.mapper.js'
-import { and, eq, isNotNull } from 'drizzle-orm'
 import * as schema from '../schema.js'
 import { Nullable } from '../../../common/types.js'
 
 export async function getAllPosts(db: NodePgDatabase<typeof schema>): Promise<PostMeta[]> {
-  try {
-    const dbPosts: PostMetaModel[] = await db
-      .select({
-        external_id: postsTable.external_id,
-        title: postsTable.title,
-        updated_at: postsTable.updated_at,
-      })
-      .from(postsTable)
+  const dbPosts: PostMetaModel[] = await db
+    .select({
+      external_id: postsTable.external_id,
+      title: postsTable.title,
+      updated_at: postsTable.updated_at,
+    })
+    .from(postsTable)
 
-    const posts = mapPostsMeta(dbPosts)
-    return posts
-  } catch (error: unknown) {
-    throw error
-  }
+  const posts = mapPostsMeta(dbPosts)
+  return posts
 }
 
 export async function getPostContentById(
@@ -35,8 +30,7 @@ export async function getPostContentById(
       content: true,
       updated_at: true,
     },
-    // where: and(isNotNull(postsTable.deleted_at), eq(postsTable.external_id, externalId)),
-    where: eq(postsTable.external_id, externalId),
+    where: (posts, { and, eq, isNull }) => and(eq(posts.external_id, externalId), isNull(posts.deleted_at)),
   })
 
   if (!dbPost) {
