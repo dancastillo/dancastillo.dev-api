@@ -1,8 +1,8 @@
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify'
-import { getGithubContributions } from '../application/github/business/github.service.js'
-import { Envs } from '../plugins/external/_env.js'
-import { mapErrorsReply } from './model/mapper/errors-reply.mapper.js'
-import { mapGithubContributionReply } from './model/mapper/github-reply.mapper.js'
+import { getGithubContributions } from '../../../application/github/business/github.service.js'
+import { Envs } from '../../../plugins/external/_env.js'
+import { mapErrorsReply } from '../../model/mapper/errors-reply.mapper.js'
+import { mapGithubContributionReply } from '../../model/mapper/github-reply.mapper.js'
 
 const githubContributions = async (fastify: FastifyInstance): Promise<void> => {
   fastify.get(
