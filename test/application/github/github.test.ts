@@ -21,7 +21,7 @@ test('Github contributions are sorted by createdAt in descending order', async (
     .reply(200, { data: mockData })
 
   const response = await app.inject({
-    url: '/github-contributions',
+    url: '/api/contributions',
     method: 'GET',
   })
 

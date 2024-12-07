@@ -6,7 +6,11 @@ import { Result } from '@dancastillo/nothrow'
 import { mapPostContentByIdReply, mapPostMetaReply } from '../../model/mapper/post-reply.mapper.js'
 import { mapErrorsReply } from '../../model/mapper/errors-reply.mapper.js'
 import { FastifyPluginAsyncTypebox, Type } from '@fastify/type-provider-typebox'
-import { PostContentResultSchema, PostMetaResultSchema, RequestParamsPostContentById } from '../../../schema/posts.js'
+import {
+  GetAllPostsOutputDtoSchema,
+  GetPostContentByIdOutputDtoSchema,
+  RequestParamsPostContentById,
+} from '../../../schema/posts.js'
 import { Nullable } from '../../../common/types.js'
 
 const posts: FastifyPluginAsyncTypebox = async (fastify: FastifyInstance): Promise<void> => {
@@ -15,7 +19,7 @@ const posts: FastifyPluginAsyncTypebox = async (fastify: FastifyInstance): Promi
     {
       schema: {
         response: {
-          200: PostMetaResultSchema,
+          200: GetAllPostsOutputDtoSchema,
         },
         tags: ['Posts'],
       },
@@ -44,7 +48,7 @@ const posts: FastifyPluginAsyncTypebox = async (fastify: FastifyInstance): Promi
           id: Type.String(),
         }),
         response: {
-          200: PostContentResultSchema,
+          200: GetPostContentByIdOutputDtoSchema,
         },
         tags: ['Posts'],
       },
