@@ -3,44 +3,17 @@ import { getGithubContributions } from '../../../application/github/business/git
 import { Envs } from '../../../plugins/external/_env.js'
 import { mapErrorsReply } from '../../model/mapper/errors-reply.mapper.js'
 import { mapGithubContributionReply } from '../../model/mapper/github-reply.mapper.js'
+import { GetAllContributionOutputDtoSchema } from '../../../schema/contributions.js'
 
 const githubContributions = async (fastify: FastifyInstance): Promise<void> => {
   fastify.get(
-    '/github-contributions',
+    '/',
     {
       schema: {
         response: {
-          '2xx': {
-            type: 'object',
-            required: ['data', 'errors'],
-            properties: {
-              data: {
-                type: 'array',
-                items: {
-                  type: 'object',
-                  properties: {
-                    createdAt: { type: 'string' },
-                    url: { type: 'string' },
-                    type: { type: 'string' },
-                    title: { type: 'string' },
-                    repositoryName: { type: 'string' },
-                    repositoryUrl: { type: 'string' },
-                  },
-                },
-              },
-              errors: {
-                type: 'array',
-                items: {
-                  type: 'object',
-                  properties: {
-                    code: { type: 'string' },
-                    message: { type: 'string' },
-                  },
-                },
-              },
-            },
-          },
+          '2xx': GetAllContributionOutputDtoSchema,
         },
+        tags: ['Contributions'],
       },
     },
 

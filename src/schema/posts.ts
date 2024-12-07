@@ -5,14 +5,14 @@ import { ErrorSchema } from './errors.js'
 // Get All Posts - Meta
 //---------------------------------------------------------------------
 
-export const PostMetaSchema = Type.Object({
+export const PostMetaOutputDtoSchema = Type.Object({
   id: Type.String(),
   title: Type.String(),
   updatedAt: Type.String({ format: 'date-time' }),
 })
 
-export const PostMetaResultSchema = Type.Object({
-  data: Type.Array(PostMetaSchema),
+export const GetAllPostsOutputDtoSchema = Type.Object({
+  data: Type.Array(PostMetaOutputDtoSchema),
   errors: Type.Array(ErrorSchema),
 })
 
@@ -21,14 +21,14 @@ export const PostMetaResultSchema = Type.Object({
 //---------------------------------------------------------------------
 export type RequestParamsPostContentById = { Params: { id: string } }
 
-export const PostContentSchema = Type.Object({
+export const PostContentOutputDtoSchema = Type.Object({
   id: Type.String(),
   title: Type.String(),
   content: Type.String(),
   updatedAt: Type.String({ format: 'date-time' }),
 })
 
-export const PostContentResultSchema = Type.Object({
-  data: PostContentSchema,
-  errors: Type.Array(ErrorSchema),
+export const GetPostContentByIdOutputDtoSchema = Type.Object({
+  data: PostContentOutputDtoSchema,
+  // errors: Type.Array(ErrorSchema),
 })
