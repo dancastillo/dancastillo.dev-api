@@ -9,9 +9,7 @@ test('posts are sorted by createdAt in descending order', async (t) => {
   // Arrange #1 - Mock the Github API response
   const mockAgent = new MockAgent()
   setGlobalDispatcher(mockAgent)
-
   const mockPool = mockAgent.get(process.env.GITHUB_API_URL!)
-
   const mockData = createPostMetaMock()
   mockPool
     .intercept({
@@ -20,10 +18,12 @@ test('posts are sorted by createdAt in descending order', async (t) => {
     })
     .reply(200, { data: mockData })
 
+  // Act
   const response = await app.inject({
     url: '/api/posts',
     method: 'GET',
   })
 
+  // Assert
   t.assert.equal(response.statusCode, 200)
 })

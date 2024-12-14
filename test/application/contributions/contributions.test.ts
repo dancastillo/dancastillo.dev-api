@@ -31,6 +31,7 @@ test('Contributions are sorted by createdAt in descending order', async (t) => {
     method: 'GET',
   })
 
+  // Extract the response body
   const result = response.json()
 
   // Asserts
