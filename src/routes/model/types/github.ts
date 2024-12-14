@@ -1,5 +1,5 @@
 export type GithubContributionReply = {
-  createdAt: Date
+  createdAt: string
   url: string
   type: string
   title: string

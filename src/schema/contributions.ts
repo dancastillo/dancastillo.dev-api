@@ -9,6 +9,7 @@ export const ContributionOutputDtoSchema = Type.Object({
   createdAt: Type.String({ format: 'date-time' }),
   url: Type.String({ format: 'uri' }),
   title: Type.String(),
+  type: Type.String(),
   repositoryName: Type.String(),
   repositoryUrl: Type.String({ format: 'uri' }),
 })

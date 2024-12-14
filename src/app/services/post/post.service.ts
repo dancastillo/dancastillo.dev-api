@@ -57,7 +57,6 @@ export async function getPostByExternalId(
 
     return createSuccessfulResult(post)
   } catch (error: unknown) {
-    console.log(error)
     logger.error(
       { error },
       `${LOG_PREFIX} :: getPostByExternalId :: An error occurred while getting a post content by ID`
