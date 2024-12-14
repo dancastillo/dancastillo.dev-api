@@ -69,13 +69,11 @@ const posts: FastifyPluginAsyncTypebox = async (fastify: FastifyInstance): Promi
         externalId
       )
 
-      console.log('post', post)
       const { data, errors } = post.mapTo(
         (data) => (data ? mapPostContentByIdReply(data) : null),
         (errors) => mapErrorsReply(errors)
       )
 
-      console.log('data', data)
       return reply.code(200).send({ data: data, errors: errors })
     }
   )

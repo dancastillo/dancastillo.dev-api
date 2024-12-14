@@ -45,7 +45,7 @@ closeWithGrace({ delay: 500 }, async ({ err }): Promise<void> => {
 await app.ready()
 
 try {
-  await app.listen({ host: process.env.HOST, port: Number(process.env.PORT) })
+  await app.listen({ host: process.env.HOST, port: process.env.PORT })
 } catch (err) {
   app.log.error(err)
   process.exit(1)

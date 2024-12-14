@@ -30,5 +30,5 @@ export const PostContentOutputDtoSchema = Type.Object({
 
 export const GetPostContentByIdOutputDtoSchema = Type.Object({
   data: PostContentOutputDtoSchema,
-  // errors: Type.Array(ErrorSchema),
+  errors: Type.Array(ErrorSchema),
 })

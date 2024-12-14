@@ -3,7 +3,7 @@ import { GithubContributionReply } from '../types/github.js'
 
 export function mapGithubContributionReply(contribution: GithubContribution): GithubContributionReply {
   return {
-    createdAt: contribution.createdAt,
+    createdAt: contribution.createdAt.toISOString(),
     url: contribution.url,
     type: contribution.type,
     title: contribution.title,
