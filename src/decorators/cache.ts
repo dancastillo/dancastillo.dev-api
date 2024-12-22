@@ -11,6 +11,7 @@ export function addCacheDecorator(fastify: FastifyInstance) {
   const cacheInstance = cache({
     duration: {
       // Default cache duration is 7 days
+      /*eslint no-constant-binary-expression: "off"*/
       seconds: Number(process.env.CACHE_DURATION) ?? 604800,
     },
   })
