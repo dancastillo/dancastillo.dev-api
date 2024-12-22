@@ -3,6 +3,7 @@ import { drizzle } from 'drizzle-orm/node-postgres'
 import pg from 'pg'
 import dotenv from 'dotenv'
 import { postsTable } from '../dist/app/db/schema.js'
+import process from 'node:process'
 
 dotenv.config()
 
