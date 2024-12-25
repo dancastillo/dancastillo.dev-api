@@ -1,22 +1,8 @@
 import { test } from 'node:test'
-import { MockAgent, setGlobalDispatcher } from 'undici'
-import { createPostMetaMock } from '../../mock-data/posts/posts.js'
 import { app } from '../../../src/server.js'
 
 test('posts are sorted by createdAt in descending order', async (t) => {
   t.after(() => app.close())
-
-  // Arrange #1 - Mock the Github API response
-  const mockAgent = new MockAgent()
-  setGlobalDispatcher(mockAgent)
-  const mockPool = mockAgent.get(process.env.GITHUB_API_URL!)
-  const mockData = createPostMetaMock()
-  mockPool
-    .intercept({
-      path: '/graphql',
-      method: 'POST',
-    })
-    .reply(200, { data: mockData })
 
   // Act
   const response = await app.inject({
@@ -24,6 +10,17 @@ test('posts are sorted by createdAt in descending order', async (t) => {
     method: 'GET',
   })
 
+  // Extract the response body
+  const result = response.json()
+
   // Assert
   t.assert.equal(response.statusCode, 200)
+  t.assert.deepEqual(result.data, [
+    {
+      id: 'pos_38b026ac-90e4-4f66-b3c9-a3581504550e',
+      title: 'About Me',
+      updatedAt: '2024-11-29T14:00:36.435Z',
+    },
+  ])
+  t.assert.deepEqual(result.errors, [])
 })
