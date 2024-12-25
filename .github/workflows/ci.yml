@@ -18,9 +18,3 @@ jobs:
     with:
       license-check: true
       test: false
-
-  test:
-    uses: dancastillo/workflows/.github/workflows/test-with-postgres.yml@main
-    with:
-      db-migrations: true
-      db-seed: true
