@@ -1,10 +1,17 @@
-import { after, describe, test } from 'node:test'
-import { app } from '../../../src/server.js'
+import Fastify from 'fastify'
+import fp from 'fastify-plugin'
+import { describe, test } from 'node:test'
+import serviceApp from '../../../src/app.js'
 
-describe('Posts', () => {
-  after(() => app.close())
+describe('Posts', async () => {
+  await test('get all posts are sorted by createdAt in descending order', async (t) => {
+    const app = Fastify()
 
-  test('get all posts are sorted by createdAt in descending order', async (t) => {
+    await app.register(fp(serviceApp))
+    await app.ready()
+
+    t.after(() => app.close())
+
     // Act
     const response = await app.inject({
       url: '/api/posts',
@@ -26,12 +33,18 @@ describe('Posts', () => {
     t.assert.deepEqual(result.errors, [])
   })
 
-  test('get post by id', async (t) => {
+  await test('get post by id', async (t) => {
+    const app = Fastify()
+
+    await app.register(fp(serviceApp))
+    await app.ready()
     // Act
     const response = await app.inject({
       url: '/api/posts/pos_38b026ac-90e4-4f66-b3c9-a3581504550e',
       method: 'GET',
     })
+
+    t.after(() => app.close())
 
     // Extract the response body
     const result = response.json()

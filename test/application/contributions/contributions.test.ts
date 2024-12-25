@@ -1,12 +1,19 @@
 import { test } from 'node:test'
 import { MockAgent, setGlobalDispatcher } from 'undici'
+import Fastify from 'fastify'
+import fp from 'fastify-plugin'
 import { createGithubContributions } from '../../mock-data/contributions/contributions.js'
-import { app } from '../../../src/server.js'
 import { mapGithubContributionData } from '../../../src/application/github/data/github.data.mapper.js'
 import { mapGithubContributionReply } from '../../../src/routes/model/mapper/github-reply.mapper.js'
+import serviceApp from '../../../src/app.js'
 
 test('Contributions are sorted by createdAt in descending order', async (t) => {
+  const app = Fastify()
+
+  await app.register(fp(serviceApp))
+
   t.after(() => app.close())
+
   // Arrange #1 - Create mock data
   const mockData = createGithubContributions()
 
