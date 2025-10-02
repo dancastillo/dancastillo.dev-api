@@ -43,7 +43,7 @@
   "dependencies": {
     "@dancastillo/cache": "^1.1.1",
     "@dancastillo/error": "^0.0.5",
-    "@dancastillo/nothrow": "^0.0.2",
+    "@dancastillo/nothrow": "^0.0.3",
     "@fastify/autoload": "^6.0.2",
     "@fastify/env": "^5.0.1",
     "@fastify/rate-limit": "^10.1.1",
